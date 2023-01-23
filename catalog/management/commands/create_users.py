@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from catalog.models import Users
 from faker import Faker
-fake = Faker
+
+fake = Faker()
 list_1 = []
 
 
@@ -12,5 +13,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        for el in range(options['arg_1']):
-            Users.objects.create(name=fake.name, email=fake.email, password=fake.password)
+        for el in range(options['arg_1'][0]):
+            self.stdout.write(self.style.SUCCESS(f'output: {fake.name(), fake.email(), fake.password()}'))
+            Users.objects.create(name=fake.name(), email=fake.email(), password=fake.password())
