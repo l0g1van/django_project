@@ -14,5 +14,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         for el in range(options['arg_1'][0]):
-            self.stdout.write(self.style.SUCCESS(f'output: {fake.name(), fake.email(), fake.password()}'))
             Users.objects.create(name=fake.name(), email=fake.email(), password=fake.password())
