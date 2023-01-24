@@ -9,7 +9,7 @@ list_1 = []
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
-        parser.add_argument('arg_1', nargs='+', type=int, choices=range(1, 11))
+        parser.add_argument('arg_1', type=int, choices=range(1, 11))
 
     def handle(self, *args, **options):
 
