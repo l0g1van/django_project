@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <center>
+        <form action="/triangle/" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <br/>
+            <br/>
+            <br/>
+            <input type="submit" value="submit">
+        </form>
+        <br/>
+        <br/>
+        <br/>
+    {% if gip %}
+        {{ form }}
+        <br/>
+        <br/>
+        <br/>
+        <input type="submit" value="submit">
+        <p> гипотенуза равна {{ gip }} </p>
+    {% endif %}
+    </center>
+</body>
+</html>
