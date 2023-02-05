@@ -1,18 +1,21 @@
 import math
 
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
-from django.shortcuts import redirect
 
-from catalog.forms import TriangleForm
+from catalog.models import Person
+
+from catalog.forms import TriangleForm, PersonForm
 
 
-# class TriangleView(generic.View):
-#     template_name = 'catalog/triangle.html'
+class PersonListView(generic.ListView):
+    template_name = 'person.html'
+    context_object_name = 'person_list'
 
-    # def
+    def get_queryset(self):
+        return Person.objects.all()
+
 
 def triangle(request):
     if request.method == "POST":
@@ -33,3 +36,31 @@ def triangle(request):
         form = TriangleForm()
 
     return render(request, 'triangle.html', {'form': form})
+
+
+def person(request, person_id):
+    return get_object_or_404(Person, pk=person_id)
+
+
+def update_person(request, pk):
+    obj = get_object_or_404(Person, pk=pk)
+    if request.method == 'POST':
+        form = PersonForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('person'))
+    else:
+        form = PersonForm(instance=obj)
+
+    return render(request, 'update_person.html', {'form': form, 'obj': obj})
+
+
+def create_person(request):
+    if request.method == 'POST':
+        form = PersonForm(request.POST)
+        if form.is_valid():
+            obj = form.save()
+            return redirect(reverse('index.html'))
+    else:
+        form = PersonForm()
+    return render(request, 'create_person.html', {'form': form})

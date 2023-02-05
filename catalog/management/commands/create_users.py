@@ -1,6 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
-from catalog.models import Users
+from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from catalog.models import Person
 from faker import Faker
 
 fake = Faker()
@@ -16,8 +16,6 @@ class Command(BaseCommand):
         for _ in range(options['arg_1']):
             fake_name = fake.first_name()
             fake_last_name = fake.last_name()
-            User.objects.bulk_create([User(first_name=fake_name,
-                                           email=f'{fake_name}.{fake_last_name}@{fake.domain_name()}',
-                                           password=fake.password(),
-                                           last_name=fake_last_name,
-                                           username=f'{fake_name}.{fake_last_name}')])
+            Person.objects.bulk_create([User(first_name=fake_name,
+                                             last_name=fake_last_name,
+                                             email=f'{fake_name}.{fake_last_name}@{fake.domain_name()}')])

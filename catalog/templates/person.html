@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p><a href="{% url 'create_person' %}">create</a></p>
+    {% if person_list %}
+        <ul>
+            {% for person in person_list %}
+                <li><a href="{% url 'update_person' person.id %}">{{ person.first_name }} {{ person.last_name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p> No person profiles are available </p>
+    {% endif %}
+</body>
+</html>

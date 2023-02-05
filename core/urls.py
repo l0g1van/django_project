@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import catalog.views
 from catalog.views import triangle
 
 urlpatterns = [
+    path('', catalog.views.PersonListView.as_view(), name='person'),
+
     path('admin/', admin.site.urls),
 
     path('triangle/', triangle, name='triangle'),
 
-    # path('hypotenuse/', hypotenuse, name='hypotenuse')
+    path('person/create/', catalog.views.create_person, name='create_person'),
+    path('person/update/<int:pk>/', catalog.views.update_person, name='update_person')
 ]
