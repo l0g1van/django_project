@@ -6,7 +6,8 @@ from django.views import generic
 
 from catalog.models import Person
 
-from catalog.forms import TriangleForm, PersonForm
+from catalog.forms import TriangleForm, PersonForm, EmailForm
+from catalog.task import send_email_task
 
 
 class PersonListView(generic.ListView):
@@ -64,3 +65,17 @@ def create_person(request):
     else:
         form = PersonForm()
     return render(request, 'create_person.html', {'form': form})
+
+
+def send_email(request):
+    if request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            form.clean()
+            print(form.cleaned_data['email'], form.cleaned_data['message'], form.cleaned_data['date_time'])
+            send_email_task.apply_async(args=[form.cleaned_data['email'], form.cleaned_data['message']],
+                                        eta=form.cleaned_data['date_time'])
+            return redirect(reverse('send_email'))
+    else:
+        form = EmailForm()
+    return render(request, 'email_form.html', {'form': form})
