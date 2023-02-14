@@ -20,7 +20,7 @@ import catalog.views
 from catalog.views import triangle
 
 urlpatterns = [
-    path('home_task_12/', catalog.views.PersonListView.as_view(), name='person'),
+    path('', catalog.views.PersonListView.as_view(), name='person'),
 
     path('admin/', admin.site.urls),
 
