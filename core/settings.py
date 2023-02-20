@@ -127,6 +127,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_CACHE_BACKEND = 'default'
 CELERY_IMPORTS = ('catalog.task',)
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+CELERY_TIMEZONE = TIME_ZONE
 
 
 CACHES = {
