@@ -77,3 +77,29 @@ class AuthorAndQuote(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        default_related_name = 'authors'
+
+
+class Book(models.Model):
+    name = models.CharField(max_length=300)
+    pages = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    rating = models.FloatField()
+    authors = models.ForeignKey(Author, null=True, on_delete=models.CASCADE)
+    pubdate = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        default_related_name = 'books'

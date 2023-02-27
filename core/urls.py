@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 import catalog.views
-from catalog.views import triangle
+from catalog.views import triangle, AuthorListView, BookListView
 
 urlpatterns = [
     path('', catalog.views.PersonListView.as_view(), name='person'),
@@ -28,5 +28,7 @@ urlpatterns = [
 
     path('person/create/', catalog.views.create_person, name='create_person'),
     path('person/update/<int:pk>/', catalog.views.update_person, name='update_person'),
-    path('email/', catalog.views.send_email, name='send_email')
+    path('email/', catalog.views.send_email, name='send_email'),
+    path('author/list/', AuthorListView.as_view(), name='author_list'),
+    path('book/list/', BookListView.as_view(), name='book_list')
 ]

@@ -1,10 +1,13 @@
 import math
 
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import generic
+from django.views.decorators.cache import cache_page
 
-from catalog.models import Person
+from catalog.models import Person, Author, Book
 
 from catalog.forms import TriangleForm, PersonForm, EmailForm
 from catalog.task import send_email_task
@@ -79,3 +82,27 @@ def send_email(request):
     else:
         form = EmailForm()
     return render(request, 'email_form.html', {'form': form})
+
+
+class AuthorListView(generic.ListView):
+    template_name = 'author_list.html'
+    context_object_name = 'author_list'
+    paginate_by = 150
+    model = Author
+    queryset = Author.objects.prefetch_related('books').annotate(books_count=Count('books'))
+
+    @method_decorator(cache_page(60 * 60 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class BookListView(generic.ListView):
+    template_name = 'book_list.html'
+    context_object_name = 'book_list'
+    paginate_by = 200
+    model = Book
+    queryset = Book.objects.annotate(authors_count=Count('authors'))
+
+    @method_decorator(cache_page(60 * 60 * 24))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
